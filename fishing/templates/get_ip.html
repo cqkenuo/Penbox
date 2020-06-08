@@ -1,0 +1,58 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}登录{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+{% block content %}
+
+    <table class="table table-hover table-bordered table-striped">
+        <thead>
+        <tr>
+            <th scope="col">访问时间</th>
+            <th scope="col">ip地址</th>
+            <th scope="col">refer</th>
+            <th scope="col">user-agent</th>
+            <th scope="col">x-forwarded-for</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for fish in fishes %}
+            <tr>
+                <td>{{ fish.created_time }}</td>
+                <td>{{ fish.ip }}</td>
+                <td>{{ fish.refer }}</td>
+                <td>{{ fish.user_agent }}</td>
+                <td>{{ fish.x_forwarded_for }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation" class="text-center">
+        <ul class="pagination">
+            {% if fishes.has_previous %}
+                <li>
+                    <a href="?page={{ fishes.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">上一页</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for item in page_range %}
+                {% if fishes.number == item %}
+                    <li class="active"><a href="?page={{ item }}">{{ item }}</a></li>
+                {% else %}
+                    <li><a href="?page={{ item }}">{{ item }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if fishes.has_next %}
+                <li>
+                    <a href="?page={{ fishes.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">下一页</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock %}
